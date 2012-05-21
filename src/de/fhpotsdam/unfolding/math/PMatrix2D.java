@@ -23,6 +23,9 @@
 
 package de.fhpotsdam.unfolding.math;
 
+import processing.core.PApplet;
+import processing.core.PVector;
+
 
 /**
  * 3x2 affine matrix implementation.
@@ -300,8 +303,8 @@ public class PMatrix2D implements PMatrix {
     if (target == null) {
       target = new PVector();
     }
-    target.x = m00*source.x + m01*source.y + m02;
-    target.y = m10*source.x + m11*source.y + m12;
+    target.x = (float)(m00*source.x + m01*source.y + m02);
+    target.y = (float)(m10*source.x + m11*source.y + m12);
     return target;
   }
 
@@ -355,7 +358,7 @@ public class PMatrix2D implements PMatrix {
    */
   public boolean invert() {
     double determinant = determinant();
-    if (Math.abs(determinant) <= double.MIN_VALUE) {
+    if (Math.abs(determinant) <= Double.MIN_VALUE) {
       return false;
     }
 
@@ -389,23 +392,23 @@ public class PMatrix2D implements PMatrix {
 
 
   public void print() {
-    int big = (int) abs(max(PApplet.max(abs(m00), abs(m01), abs(m02)),
-                            PApplet.max(abs(m10), abs(m11), abs(m12))));
+    int big = (int) abs(max(PApplet.max((int)abs(m00), (int)abs(m01), (int)abs(m02)),
+                            PApplet.max((int)abs(m10), (int)abs(m11), (int)abs(m12))));
 
     int digits = 1;
-    if (double.isNaN(big) || double.isInfinite(big)) {  // avoid infinite loop
+    if (Double.isNaN(big) || Double.isInfinite(big)) {  // avoid infinite loop
       digits = 5;
     } else {
       while ((big /= 10) != 0) digits++;  // cheap log()
     }
 
-    System.out.println(PApplet.nfs(m00, digits, 4) + " " +
-                       PApplet.nfs(m01, digits, 4) + " " +
-                       PApplet.nfs(m02, digits, 4));
+    System.out.println(PApplet.nfs((float)m00, digits, 4) + " " +
+                       PApplet.nfs((float)m01, digits, 4) + " " +
+                       PApplet.nfs((float)m02, digits, 4));
 
-    System.out.println(PApplet.nfs(m10, digits, 4) + " " +
-                       PApplet.nfs(m11, digits, 4) + " " +
-                       PApplet.nfs(m12, digits, 4));
+    System.out.println(PApplet.nfs((float)m10, digits, 4) + " " +
+                       PApplet.nfs((float)m11, digits, 4) + " " +
+                       PApplet.nfs((float)m12, digits, 4));
 
     System.out.println();
   }
