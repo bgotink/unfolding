@@ -21,7 +21,9 @@
   Boston, MA  02111-1307  USA
 */
 
-package de.ftpotsdam.unfolding.math;
+package de.fhpotsdam.unfolding.math;
+
+import processing.core.PVector;
 
 
 /**
