@@ -2,9 +2,9 @@ package de.fhpotsdam.unfolding.utils;
 
 import processing.core.PApplet;
 import processing.core.PFont;
-import processing.core.PMatrix3D;
 import de.fhpotsdam.unfolding.Map;
 import de.fhpotsdam.unfolding.mapdisplay.AbstractMapDisplay;
+import de.fhpotsdam.unfolding.math.PMatrix3D;
 
 public class DebugDisplay {
 
@@ -96,12 +96,12 @@ public class DebugDisplay {
 	}
 
 	public static String getMatrix3DAsString(PMatrix3D m) {
-		return PApplet.nfs(m.m00, 2, 2) + "," + PApplet.nfs(m.m01, 2, 2) + "," + PApplet.nfs(m.m02, 2, 2) + ","
-				+ PApplet.nfs(m.m03, 2, 2) + "\n" + PApplet.nfs(m.m10, 2, 2) + "," + PApplet.nfs(m.m11, 2, 2) + ","
-				+ PApplet.nfs(m.m12, 2, 2) + "," + PApplet.nfs(m.m13, 2, 2) + "\n" + PApplet.nfs(m.m20, 2, 2) + ","
-				+ PApplet.nfs(m.m21, 2, 2) + "," + PApplet.nfs(m.m22, 2, 2) + "," + PApplet.nfs(m.m33, 2, 2) + "\n"
-				+ PApplet.nfs(m.m30, 2, 2) + "," + PApplet.nfs(m.m31, 2, 2) + "," + PApplet.nfs(m.m32, 2, 2) + ","
-				+ PApplet.nfs(m.m33, 2, 2) + "\n";
+		return PApplet.nfs((float)m.m00, 2, 2) + "," + PApplet.nfs((float)m.m01, 2, 2) + "," + PApplet.nfs((float)m.m02, 2, 2) + ","
+				+ PApplet.nfs((float)m.m03, 2, 2) + "\n" + PApplet.nfs((float)m.m10, 2, 2) + "," + PApplet.nfs((float)m.m11, 2, 2) + ","
+				+ PApplet.nfs((float)m.m12, 2, 2) + "," + PApplet.nfs((float)m.m13, 2, 2) + "\n" + PApplet.nfs((float)m.m20, 2, 2) + ","
+				+ PApplet.nfs((float)m.m21, 2, 2) + "," + PApplet.nfs((float)m.m22, 2, 2) + "," + PApplet.nfs((float)m.m33, 2, 2) + "\n"
+				+ PApplet.nfs((float)m.m30, 2, 2) + "," + PApplet.nfs((float)m.m31, 2, 2) + "," + PApplet.nfs((float)m.m32, 2, 2) + ","
+				+ PApplet.nfs((float)m.m33, 2, 2) + "\n";
 	}
 
 }
