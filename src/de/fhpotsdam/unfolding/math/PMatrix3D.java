@@ -23,16 +23,20 @@
 
 package de.fhpotsdam.unfolding.math;
 
+import processing.core.PApplet;
+import processing.core.PConstants;
+import processing.core.PVector;
+
 
 /**
  * 4x4 matrix implementation.
  */
 public final class PMatrix3D implements PMatrix /*, PConstants*/ {
 
-  public float m00, m01, m02, m03;
-  public float m10, m11, m12, m13;
-  public float m20, m21, m22, m23;
-  public float m30, m31, m32, m33;
+  public double m00, m01, m02, m03;
+  public double m10, m11, m12, m13;
+  public double m20, m21, m22, m23;
+  public double m30, m31, m32, m33;
 
 
   // locally allocated version to avoid creating new memory
@@ -44,8 +48,8 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public PMatrix3D(float m00, float m01, float m02,
-                   float m10, float m11, float m12) {
+  public PMatrix3D(double m00, double m01, double m02,
+                   double m10, double m11, double m12) {
     set(m00, m01, m02, 0,
         m10, m11, m12, 0,
         0,   0,   1,   0,
@@ -53,10 +57,10 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public PMatrix3D(float m00, float m01, float m02, float m03,
-                   float m10, float m11, float m12, float m13,
-                   float m20, float m21, float m22, float m23,
-                   float m30, float m31, float m32, float m33) {
+  public PMatrix3D(double m00, double m01, double m02, double m03,
+                   double m10, double m11, double m12, double m13,
+                   double m20, double m21, double m22, double m23,
+                   double m30, double m31, double m32, double m33) {
     set(m00, m01, m02, m03,
         m10, m11, m12, m13,
         m20, m21, m22, m23,
@@ -88,12 +92,12 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
 
 
   /**
-   * Copies the matrix contents into a 16 entry float array.
+   * Copies the matrix contents into a 16 entry double array.
    * If target is null (or not the correct size), a new array will be created.
    */
-  public float[] get(float[] target) {
+  public double[] get(double[] target) {
     if ((target == null) || (target.length != 16)) {
-      target = new float[16];
+      target = new double[16];
     }
     target[0] = m00;
     target[1] = m01;
@@ -136,7 +140,7 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void set(float[] source) {
+  public void set(double[] source) {
     if (source.length == 6) {
       set(source[0], source[1], source[2],
           source[3], source[4], source[5]);
@@ -165,8 +169,8 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void set(float m00, float m01, float m02,
-                  float m10, float m11, float m12) {
+  public void set(double m00, double m01, double m02,
+                  double m10, double m11, double m12) {
     set(m00, m01, 0, m02,
         m10, m11, 0, m12,
         0, 0, 1, 0,
@@ -174,10 +178,10 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void set(float m00, float m01, float m02, float m03,
-                  float m10, float m11, float m12, float m13,
-                  float m20, float m21, float m22, float m23,
-                  float m30, float m31, float m32, float m33) {
+  public void set(double m00, double m01, double m02, double m03,
+                  double m10, double m11, double m12, double m13,
+                  double m20, double m21, double m22, double m23,
+                  double m30, double m31, double m32, double m33) {
     this.m00 = m00; this.m01 = m01; this.m02 = m02; this.m03 = m03;
     this.m10 = m10; this.m11 = m11; this.m12 = m12; this.m13 = m13;
     this.m20 = m20; this.m21 = m21; this.m22 = m22; this.m23 = m23;
@@ -185,16 +189,16 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void translate(float tx, float ty) {
+  public void translate(double tx, double ty) {
     translate(tx, ty, 0);
   }
 
-//  public void invTranslate(float tx, float ty) {
+//  public void invTranslate(double tx, double ty) {
 //    invTranslate(tx, ty, 0);
 //  }
 
 
-  public void translate(float tx, float ty, float tz) {
+  public void translate(double tx, double ty, double tz) {
     m03 += tx*m00 + ty*m01 + tz*m02;
     m13 += tx*m10 + ty*m11 + tz*m12;
     m23 += tx*m20 + ty*m21 + tz*m22;
@@ -202,34 +206,34 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void rotate(float angle) {
+  public void rotate(double angle) {
     rotateZ(angle);
   }
 
 
-  public void rotateX(float angle) {
-    float c = cos(angle);
-    float s = sin(angle);
+  public void rotateX(double angle) {
+    double c = cos(angle);
+    double s = sin(angle);
     apply(1, 0, 0, 0,  0, c, -s, 0,  0, s, c, 0,  0, 0, 0, 1);
   }
 
 
-  public void rotateY(float angle) {
-    float c = cos(angle);
-    float s = sin(angle);
+  public void rotateY(double angle) {
+    double c = cos(angle);
+    double s = sin(angle);
     apply(c, 0, s, 0,  0, 1, 0, 0,  -s, 0, c, 0,  0, 0, 0, 1);
   }
 
 
-  public void rotateZ(float angle) {
-    float c = cos(angle);
-    float s = sin(angle);
+  public void rotateZ(double angle) {
+    double c = cos(angle);
+    double s = sin(angle);
     apply(c, -s, 0, 0,  s, c, 0, 0,  0, 0, 1, 0,  0, 0, 0, 1);
   }
 
 
-  public void rotate(float angle, float v0, float v1, float v2) {
-    float norm2 = v0 * v0 + v1 * v1 + v2 * v2;
+  public void rotate(double angle, double v0, double v1, double v2) {
+    double norm2 = v0 * v0 + v1 * v1 + v2 * v2;
     if (norm2 < PConstants.EPSILON) {
       // The vector is zero, cannot apply rotation.
       return;
@@ -237,15 +241,15 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
     
     if (Math.abs(norm2 - 1) > PConstants.EPSILON) {
       // The rotation vector is not normalized.
-      float norm = PApplet.sqrt(norm2);
+      double norm = Math.sqrt(norm2);
       v0 /= norm;
       v1 /= norm;
       v2 /= norm;
     } 
 
-    float c = cos(angle);
-    float s = sin(angle);
-    float t = 1.0f - c;
+    double c = cos(angle);
+    double s = sin(angle);
+    double t = 1.0f - c;
 
     apply((t*v0*v0) + c, (t*v0*v1) - (s*v2), (t*v0*v2) + (s*v1), 0,
           (t*v0*v1) + (s*v2), (t*v1*v1) + c, (t*v1*v2) - (s*v0), 0,
@@ -254,19 +258,19 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void scale(float s) {
+  public void scale(double s) {
     //apply(s, 0, 0, 0,  0, s, 0, 0,  0, 0, s, 0,  0, 0, 0, 1);
     scale(s, s, s);
   }
 
 
-  public void scale(float sx, float sy) {
+  public void scale(double sx, double sy) {
     //apply(sx, 0, 0, 0,  0, sy, 0, 0,  0, 0, 1, 0,  0, 0, 0, 1);
     scale(sx, sy, 1);
   }
 
 
-  public void scale(float x, float y, float z) {
+  public void scale(double x, double y, double z) {
     //apply(x, 0, 0, 0,  0, y, 0, 0,  0, 0, z, 0,  0, 0, 0, 1);
     m00 *= x;  m01 *= y;  m02 *= z;
     m10 *= x;  m11 *= y;  m12 *= z;
@@ -275,8 +279,8 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void shearX(float angle) {
-    float t = (float) Math.tan(angle);
+  public void shearX(double angle) {
+    double t = (double) Math.tan(angle);
     apply(1, t, 0, 0,
           0, 1, 0, 0,
           0, 0, 1, 0,
@@ -284,8 +288,8 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void shearY(float angle) {
-    float t = (float) Math.tan(angle);
+  public void shearY(double angle) {
+    double t = (double) Math.tan(angle);
     apply(1, 0, 0, 0,
           t, 1, 0, 0,
           0, 0, 1, 0,
@@ -318,8 +322,8 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void apply(float n00, float n01, float n02,
-                    float n10, float n11, float n12) {
+  public void apply(double n00, double n01, double n02,
+                    double n10, double n11, double n12) {
     apply(n00, n01, 0, n02,
           n10, n11, 0, n12,
           0, 0, 1, 0,
@@ -327,30 +331,30 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void apply(float n00, float n01, float n02, float n03,
-                    float n10, float n11, float n12, float n13,
-                    float n20, float n21, float n22, float n23,
-                    float n30, float n31, float n32, float n33) {
+  public void apply(double n00, double n01, double n02, double n03,
+                    double n10, double n11, double n12, double n13,
+                    double n20, double n21, double n22, double n23,
+                    double n30, double n31, double n32, double n33) {
 
-    float r00 = m00*n00 + m01*n10 + m02*n20 + m03*n30;
-    float r01 = m00*n01 + m01*n11 + m02*n21 + m03*n31;
-    float r02 = m00*n02 + m01*n12 + m02*n22 + m03*n32;
-    float r03 = m00*n03 + m01*n13 + m02*n23 + m03*n33;
+    double r00 = m00*n00 + m01*n10 + m02*n20 + m03*n30;
+    double r01 = m00*n01 + m01*n11 + m02*n21 + m03*n31;
+    double r02 = m00*n02 + m01*n12 + m02*n22 + m03*n32;
+    double r03 = m00*n03 + m01*n13 + m02*n23 + m03*n33;
 
-    float r10 = m10*n00 + m11*n10 + m12*n20 + m13*n30;
-    float r11 = m10*n01 + m11*n11 + m12*n21 + m13*n31;
-    float r12 = m10*n02 + m11*n12 + m12*n22 + m13*n32;
-    float r13 = m10*n03 + m11*n13 + m12*n23 + m13*n33;
+    double r10 = m10*n00 + m11*n10 + m12*n20 + m13*n30;
+    double r11 = m10*n01 + m11*n11 + m12*n21 + m13*n31;
+    double r12 = m10*n02 + m11*n12 + m12*n22 + m13*n32;
+    double r13 = m10*n03 + m11*n13 + m12*n23 + m13*n33;
 
-    float r20 = m20*n00 + m21*n10 + m22*n20 + m23*n30;
-    float r21 = m20*n01 + m21*n11 + m22*n21 + m23*n31;
-    float r22 = m20*n02 + m21*n12 + m22*n22 + m23*n32;
-    float r23 = m20*n03 + m21*n13 + m22*n23 + m23*n33;
+    double r20 = m20*n00 + m21*n10 + m22*n20 + m23*n30;
+    double r21 = m20*n01 + m21*n11 + m22*n21 + m23*n31;
+    double r22 = m20*n02 + m21*n12 + m22*n22 + m23*n32;
+    double r23 = m20*n03 + m21*n13 + m22*n23 + m23*n33;
 
-    float r30 = m30*n00 + m31*n10 + m32*n20 + m33*n30;
-    float r31 = m30*n01 + m31*n11 + m32*n21 + m33*n31;
-    float r32 = m30*n02 + m31*n12 + m32*n22 + m33*n32;
-    float r33 = m30*n03 + m31*n13 + m32*n23 + m33*n33;
+    double r30 = m30*n00 + m31*n10 + m32*n20 + m33*n30;
+    double r31 = m30*n01 + m31*n11 + m32*n21 + m33*n31;
+    double r32 = m30*n02 + m31*n12 + m32*n22 + m33*n32;
+    double r33 = m30*n03 + m31*n13 + m32*n23 + m33*n33;
 
     m00 = r00; m01 = r01; m02 = r02; m03 = r03;
     m10 = r10; m11 = r11; m12 = r12; m13 = r13;
@@ -378,8 +382,8 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void preApply(float n00, float n01, float n02,
-                       float n10, float n11, float n12) {
+  public void preApply(double n00, double n01, double n02,
+                       double n10, double n11, double n12) {
     preApply(n00, n01, 0, n02,
              n10, n11, 0, n12,
              0, 0, 1, 0,
@@ -387,30 +391,30 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void preApply(float n00, float n01, float n02, float n03,
-                       float n10, float n11, float n12, float n13,
-                       float n20, float n21, float n22, float n23,
-                       float n30, float n31, float n32, float n33) {
+  public void preApply(double n00, double n01, double n02, double n03,
+                       double n10, double n11, double n12, double n13,
+                       double n20, double n21, double n22, double n23,
+                       double n30, double n31, double n32, double n33) {
 
-    float r00 = n00*m00 + n01*m10 + n02*m20 + n03*m30;
-    float r01 = n00*m01 + n01*m11 + n02*m21 + n03*m31;
-    float r02 = n00*m02 + n01*m12 + n02*m22 + n03*m32;
-    float r03 = n00*m03 + n01*m13 + n02*m23 + n03*m33;
+    double r00 = n00*m00 + n01*m10 + n02*m20 + n03*m30;
+    double r01 = n00*m01 + n01*m11 + n02*m21 + n03*m31;
+    double r02 = n00*m02 + n01*m12 + n02*m22 + n03*m32;
+    double r03 = n00*m03 + n01*m13 + n02*m23 + n03*m33;
 
-    float r10 = n10*m00 + n11*m10 + n12*m20 + n13*m30;
-    float r11 = n10*m01 + n11*m11 + n12*m21 + n13*m31;
-    float r12 = n10*m02 + n11*m12 + n12*m22 + n13*m32;
-    float r13 = n10*m03 + n11*m13 + n12*m23 + n13*m33;
+    double r10 = n10*m00 + n11*m10 + n12*m20 + n13*m30;
+    double r11 = n10*m01 + n11*m11 + n12*m21 + n13*m31;
+    double r12 = n10*m02 + n11*m12 + n12*m22 + n13*m32;
+    double r13 = n10*m03 + n11*m13 + n12*m23 + n13*m33;
 
-    float r20 = n20*m00 + n21*m10 + n22*m20 + n23*m30;
-    float r21 = n20*m01 + n21*m11 + n22*m21 + n23*m31;
-    float r22 = n20*m02 + n21*m12 + n22*m22 + n23*m32;
-    float r23 = n20*m03 + n21*m13 + n22*m23 + n23*m33;
+    double r20 = n20*m00 + n21*m10 + n22*m20 + n23*m30;
+    double r21 = n20*m01 + n21*m11 + n22*m21 + n23*m31;
+    double r22 = n20*m02 + n21*m12 + n22*m22 + n23*m32;
+    double r23 = n20*m03 + n21*m13 + n22*m23 + n23*m33;
 
-    float r30 = n30*m00 + n31*m10 + n32*m20 + n33*m30;
-    float r31 = n30*m01 + n31*m11 + n32*m21 + n33*m31;
-    float r32 = n30*m02 + n31*m12 + n32*m22 + n33*m32;
-    float r33 = n30*m03 + n31*m13 + n32*m23 + n33*m33;
+    double r30 = n30*m00 + n31*m10 + n32*m20 + n33*m30;
+    double r31 = n30*m01 + n31*m11 + n32*m21 + n33*m31;
+    double r32 = n30*m02 + n31*m12 + n32*m22 + n33*m32;
+    double r33 = n30*m03 + n31*m13 + n32*m23 + n33*m33;
 
     m00 = r00; m01 = r01; m02 = r02; m03 = r03;
     m10 = r10; m11 = r11; m12 = r12; m13 = r13;
@@ -426,10 +430,10 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
     if (target == null) {
       target = new PVector();
     }
-    target.x = m00*source.x + m01*source.y + m02*source.z + m03;
-    target.y = m10*source.x + m11*source.y + m12*source.z + m13;
-    target.z = m20*source.x + m21*source.y + m22*source.z + m23;
-//    float tw = m30*source.x + m31*source.y + m32*source.z + m33;
+    target.x = (float)(m00*source.x + m01*source.y + m02*source.z + m03);
+    target.y = (float)(m10*source.x + m11*source.y + m12*source.z + m13);
+    target.z = (float)(m20*source.x + m21*source.y + m22*source.z + m23);
+//    double tw = m30*source.x + m31*source.y + m32*source.z + m33;
 //    if (tw != 0 && tw != 1) {
 //      target.div(tw);
 //    }
@@ -445,7 +449,7 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
     target.x = m00*source.x + m10*source.y + m20*source.z + m30;
     target.y = m01*source.x + m11*source.y + m21*source.z + m31;
     target.z = m02*source.x + m12*source.y + m22*source.z + m32;
-    float tw = m03*source.x + m13*source.y + m23*source.z + m33;
+    double tw = m03*source.x + m13*source.y + m23*source.z + m33;
     if (tw != 0 && tw != 1) {
       target.div(tw);
     }
@@ -456,11 +460,11 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
 
   /**
    * Multiply a three or four element vector against this matrix. If out is
-   * null or not length 3 or 4, a new float array (length 3) will be returned.
+   * null or not length 3 or 4, a new double array (length 3) will be returned.
    */
-  public float[] mult(float[] source, float[] target) {
+  public double[] mult(double[] source, double[] target) {
     if (target == null || target.length < 3) {
-      target = new float[3];
+      target = new double[3];
     }
     if (source == target) {
       throw new RuntimeException("The source and target vectors used in " +
@@ -470,7 +474,7 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
       target[0] = m00*source[0] + m01*source[1] + m02*source[2] + m03;
       target[1] = m10*source[0] + m11*source[1] + m12*source[2] + m13;
       target[2] = m20*source[0] + m21*source[1] + m22*source[2] + m23;
-      //float w = m30*source[0] + m31*source[1] + m32*source[2] + m33;
+      //double w = m30*source[0] + m31*source[1] + m32*source[2] + m33;
       //if (w != 0 && w != 1) {
       //  target[0] /= w; target[1] /= w; target[2] /= w;
       //}
@@ -484,52 +488,52 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public float multX(float x, float y) {
+  public double multX(double x, double y) {
     return m00*x + m01*y + m03;
   }
 
 
-  public float multY(float x, float y) {
+  public double multY(double x, double y) {
     return m10*x + m11*y + m13;
   }
 
 
-  public float multX(float x, float y, float z) {
+  public double multX(double x, double y, double z) {
     return m00*x + m01*y + m02*z + m03;
   }
 
 
-  public float multY(float x, float y, float z) {
+  public double multY(double x, double y, double z) {
     return m10*x + m11*y + m12*z + m13;
   }
 
 
-  public float multZ(float x, float y, float z) {
+  public double multZ(double x, double y, double z) {
     return m20*x + m21*y + m22*z + m23;
   }
 
 
-  public float multW(float x, float y, float z) {
+  public double multW(double x, double y, double z) {
     return m30*x + m31*y + m32*z + m33;
   }
 
 
-  public float multX(float x, float y, float z, float w) {
+  public double multX(double x, double y, double z, double w) {
     return m00*x + m01*y + m02*z + m03*w;
   }
 
 
-  public float multY(float x, float y, float z, float w) {
+  public double multY(double x, double y, double z, double w) {
     return m10*x + m11*y + m12*z + m13*w;
   }
 
 
-  public float multZ(float x, float y, float z, float w) {
+  public double multZ(double x, double y, double z, double w) {
     return m20*x + m21*y + m22*z + m23*w;
   }
 
 
-  public float multW(float x, float y, float z, float w) {
+  public double multW(double x, double y, double z, double w) {
     return m30*x + m31*y + m32*z + m33*w;
   }
 
@@ -538,7 +542,7 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
    * Transpose this matrix.
    */
   public void transpose() {
-    float temp;
+    double temp;
     temp = m01; m01 = m10; m10 = temp;
     temp = m02; m02 = m20; m20 = temp;
     temp = m03; m03 = m30; m30 = temp;
@@ -553,34 +557,34 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
    * @return true if successful
    */
   public boolean invert() {
-    float determinant = determinant();
+    double determinant = determinant();
     if (determinant == 0) {
       return false;
     }
 
     // first row
-    float t00 =  determinant3x3(m11, m12, m13, m21, m22, m23, m31, m32, m33);
-    float t01 = -determinant3x3(m10, m12, m13, m20, m22, m23, m30, m32, m33);
-    float t02 =  determinant3x3(m10, m11, m13, m20, m21, m23, m30, m31, m33);
-    float t03 = -determinant3x3(m10, m11, m12, m20, m21, m22, m30, m31, m32);
+    double t00 =  determinant3x3(m11, m12, m13, m21, m22, m23, m31, m32, m33);
+    double t01 = -determinant3x3(m10, m12, m13, m20, m22, m23, m30, m32, m33);
+    double t02 =  determinant3x3(m10, m11, m13, m20, m21, m23, m30, m31, m33);
+    double t03 = -determinant3x3(m10, m11, m12, m20, m21, m22, m30, m31, m32);
 
     // second row
-    float t10 = -determinant3x3(m01, m02, m03, m21, m22, m23, m31, m32, m33);
-    float t11 =  determinant3x3(m00, m02, m03, m20, m22, m23, m30, m32, m33);
-    float t12 = -determinant3x3(m00, m01, m03, m20, m21, m23, m30, m31, m33);
-    float t13 =  determinant3x3(m00, m01, m02, m20, m21, m22, m30, m31, m32);
+    double t10 = -determinant3x3(m01, m02, m03, m21, m22, m23, m31, m32, m33);
+    double t11 =  determinant3x3(m00, m02, m03, m20, m22, m23, m30, m32, m33);
+    double t12 = -determinant3x3(m00, m01, m03, m20, m21, m23, m30, m31, m33);
+    double t13 =  determinant3x3(m00, m01, m02, m20, m21, m22, m30, m31, m32);
 
     // third row
-    float t20 =  determinant3x3(m01, m02, m03, m11, m12, m13, m31, m32, m33);
-    float t21 = -determinant3x3(m00, m02, m03, m10, m12, m13, m30, m32, m33);
-    float t22 =  determinant3x3(m00, m01, m03, m10, m11, m13, m30, m31, m33);
-    float t23 = -determinant3x3(m00, m01, m02, m10, m11, m12, m30, m31, m32);
+    double t20 =  determinant3x3(m01, m02, m03, m11, m12, m13, m31, m32, m33);
+    double t21 = -determinant3x3(m00, m02, m03, m10, m12, m13, m30, m32, m33);
+    double t22 =  determinant3x3(m00, m01, m03, m10, m11, m13, m30, m31, m33);
+    double t23 = -determinant3x3(m00, m01, m02, m10, m11, m12, m30, m31, m32);
 
     // fourth row
-    float t30 = -determinant3x3(m01, m02, m03, m11, m12, m13, m21, m22, m23);
-    float t31 =  determinant3x3(m00, m02, m03, m10, m12, m13, m20, m22, m23);
-    float t32 = -determinant3x3(m00, m01, m03, m10, m11, m13, m20, m21, m23);
-    float t33 =  determinant3x3(m00, m01, m02, m10, m11, m12, m20, m21, m22);
+    double t30 = -determinant3x3(m01, m02, m03, m11, m12, m13, m21, m22, m23);
+    double t31 =  determinant3x3(m00, m02, m03, m10, m12, m13, m20, m22, m23);
+    double t32 = -determinant3x3(m00, m01, m03, m10, m11, m13, m20, m21, m23);
+    double t33 =  determinant3x3(m00, m01, m02, m10, m11, m12, m20, m21, m22);
 
     // transpose and divide by the determinant
     m00 = t00 / determinant;
@@ -611,9 +615,9 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
    * Calculate the determinant of a 3x3 matrix.
    * @return result
    */
-  private float determinant3x3(float t00, float t01, float t02,
-                               float t10, float t11, float t12,
-                               float t20, float t21, float t22) {
+  private double determinant3x3(double t00, double t01, double t02,
+                               double t10, double t11, double t12,
+                               double t20, double t21, double t22) {
     return (t00 * (t11 * t22 - t12 * t21) +
             t01 * (t12 * t20 - t10 * t22) +
             t02 * (t10 * t21 - t11 * t20));
@@ -623,8 +627,8 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   /**
    * @return the determinant of the matrix
    */
-  public float determinant() {
-    float f =
+  public double determinant() {
+    double f =
       m00
       * ((m11 * m22 * m33 + m12 * m23 * m31 + m13 * m21 * m32)
          - m13 * m22 * m31
@@ -656,7 +660,7 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   // These functions should not be used, as they will be removed in the future.
 
 
-  public void invTranslate(float tx, float ty, float tz) {
+  public void invTranslate(double tx, double ty, double tz) {
     preApply(1, 0, 0, -tx,
              0, 1, 0, -ty,
              0, 0, 1, -tz,
@@ -664,33 +668,33 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void invRotateX(float angle) {
-    float c = cos(-angle);
-    float s = sin(-angle);
+  public void invRotateX(double angle) {
+    double c = cos(-angle);
+    double s = sin(-angle);
     preApply(1, 0, 0, 0,  0, c, -s, 0,  0, s, c, 0,  0, 0, 0, 1);
   }
 
 
-  public void invRotateY(float angle) {
-    float c = cos(-angle);
-    float s = sin(-angle);
+  public void invRotateY(double angle) {
+    double c = cos(-angle);
+    double s = sin(-angle);
     preApply(c, 0, s, 0,  0, 1, 0, 0,  -s, 0, c, 0,  0, 0, 0, 1);
   }
 
 
-  public void invRotateZ(float angle) {
-    float c = cos(-angle);
-    float s = sin(-angle);
+  public void invRotateZ(double angle) {
+    double c = cos(-angle);
+    double s = sin(-angle);
     preApply(c, -s, 0, 0,  s, c, 0, 0,  0, 0, 1, 0,  0, 0, 0, 1);
   }
 
 
-  public void invRotate(float angle, float v0, float v1, float v2) {
+  public void invRotate(double angle, double v0, double v1, double v2) {
     //TODO should make sure this vector is normalized
 
-    float c = cos(-angle);
-    float s = sin(-angle);
-    float t = 1.0f - c;
+    double c = cos(-angle);
+    double s = sin(-angle);
+    double t = 1.0f - c;
 
     preApply((t*v0*v0) + c, (t*v0*v1) - (s*v2), (t*v0*v2) + (s*v1), 0,
              (t*v0*v1) + (s*v2), (t*v1*v1) + c, (t*v1*v2) - (s*v0), 0,
@@ -699,15 +703,15 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void invScale(float x, float y, float z) {
+  public void invScale(double x, double y, double z) {
     preApply(1/x, 0, 0, 0,  0, 1/y, 0, 0,  0, 0, 1/z, 0,  0, 0, 0, 1);
   }
 
 
-  public boolean invApply(float n00, float n01, float n02, float n03,
-                          float n10, float n11, float n12, float n13,
-                          float n20, float n21, float n22, float n23,
-                          float n30, float n31, float n32, float n33) {
+  public boolean invApply(double n00, double n01, double n02, double n03,
+                          double n10, double n11, double n12, double n13,
+                          double n20, double n21, double n22, double n23,
+                          double n30, double n31, double n32, double n33) {
     if (inverseCopy == null) {
       inverseCopy = new PMatrix3D();
     }
@@ -749,25 +753,25 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
       while ((big /= 10) != 0) digits++;  // cheap log()
     }
 
-    System.out.println(PApplet.nfs(m00, digits, 4) + " " +
-                       PApplet.nfs(m01, digits, 4) + " " +
-                       PApplet.nfs(m02, digits, 4) + " " +
-                       PApplet.nfs(m03, digits, 4));
+    System.out.println(PApplet.nfs((float)m00, digits, 4) + " " +
+                       PApplet.nfs((float)m01, digits, 4) + " " +
+                       PApplet.nfs((float)m02, digits, 4) + " " +
+                       PApplet.nfs((float)m03, digits, 4));
 
-    System.out.println(PApplet.nfs(m10, digits, 4) + " " +
-                       PApplet.nfs(m11, digits, 4) + " " +
-                       PApplet.nfs(m12, digits, 4) + " " +
-                       PApplet.nfs(m13, digits, 4));
+    System.out.println(PApplet.nfs((float)m10, digits, 4) + " " +
+                       PApplet.nfs((float)m11, digits, 4) + " " +
+                       PApplet.nfs((float)m12, digits, 4) + " " +
+                       PApplet.nfs((float)m13, digits, 4));
 
-    System.out.println(PApplet.nfs(m20, digits, 4) + " " +
-                       PApplet.nfs(m21, digits, 4) + " " +
-                       PApplet.nfs(m22, digits, 4) + " " +
-                       PApplet.nfs(m23, digits, 4));
+    System.out.println(PApplet.nfs((float)m20, digits, 4) + " " +
+                       PApplet.nfs((float)m21, digits, 4) + " " +
+                       PApplet.nfs((float)m22, digits, 4) + " " +
+                       PApplet.nfs((float)m23, digits, 4));
 
-    System.out.println(PApplet.nfs(m30, digits, 4) + " " +
-                       PApplet.nfs(m31, digits, 4) + " " +
-                       PApplet.nfs(m32, digits, 4) + " " +
-                       PApplet.nfs(m33, digits, 4));
+    System.out.println(PApplet.nfs((float)m30, digits, 4) + " " +
+                       PApplet.nfs((float)m31, digits, 4) + " " +
+                       PApplet.nfs((float)m32, digits, 4) + " " +
+                       PApplet.nfs((float)m33, digits, 4));
 
     System.out.println();
   }
@@ -776,19 +780,19 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   //////////////////////////////////////////////////////////////
 
 
-  private final float max(float a, float b) {
+  private final double max(double a, double b) {
     return (a > b) ? a : b;
   }
 
-  private final float abs(float a) {
+  private final double abs(double a) {
     return (a < 0) ? -a : a;
   }
 
-  private final float sin(float angle) {
-    return (float) Math.sin(angle);
+  private final double sin(double angle) {
+    return (double) Math.sin(angle);
   }
 
-  private final float cos(float angle) {
-    return (float) Math.cos(angle);
+  private final double cos(double angle) {
+    return (double) Math.cos(angle);
   }
 }
