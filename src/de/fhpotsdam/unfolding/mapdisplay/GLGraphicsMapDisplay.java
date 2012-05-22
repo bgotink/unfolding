@@ -34,7 +34,7 @@ public class GLGraphicsMapDisplay extends ProcessingMapDisplay implements PConst
 
 		outerPG.pushMatrix();
 		outerPG.translate(offsetX, offsetY);
-		outerPG.applyMatrix(matrix);
+		outerPG.applyMatrix(matrix.getAsPMatrix3D());
 		outerPG.image(pg.getTexture(), 0, 0);
 
 		if (markerManager != null) {
