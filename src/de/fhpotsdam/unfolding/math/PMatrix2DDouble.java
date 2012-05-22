@@ -32,25 +32,25 @@ import processing.core.PVector;
  *
  * Taken from processing.org and transformed into a double version.
  */
-public class PMatrix2D implements PMatrix {
+public class PMatrix2DDouble implements PMatrixDouble {
 
   public double m00, m01, m02;
   public double m10, m11, m12;
 
 
-  public PMatrix2D() {
+  public PMatrix2DDouble() {
     reset();
   }
 
 
-  public PMatrix2D(double m00, double m01, double m02,
+  public PMatrix2DDouble(double m00, double m01, double m02,
                    double m10, double m11, double m12) {
     set(m00, m01, m02,
         m10, m11, m12);
   }
 
 
-  public PMatrix2D(PMatrix matrix) {
+  public PMatrix2DDouble(PMatrixDouble matrix) {
     set(matrix);
   }
 
@@ -64,8 +64,8 @@ public class PMatrix2D implements PMatrix {
   /**
    * Returns a copy of this PMatrix.
    */
-  public PMatrix2D get() {
-    PMatrix2D outgoing = new PMatrix2D();
+  public PMatrix2DDouble get() {
+    PMatrix2DDouble outgoing = new PMatrix2DDouble();
     outgoing.set(this);
     return outgoing;
   }
@@ -91,9 +91,9 @@ public class PMatrix2D implements PMatrix {
   }
 
 
-  public void set(PMatrix matrix) {
-    if (matrix instanceof PMatrix2D) {
-      PMatrix2D src = (PMatrix2D) matrix;
+  public void set(PMatrixDouble matrix) {
+    if (matrix instanceof PMatrix2DDouble) {
+      PMatrix2DDouble src = (PMatrix2DDouble) matrix;
       set(src.m00, src.m01, src.m02,
           src.m10, src.m11, src.m12);
     } else {
@@ -102,7 +102,7 @@ public class PMatrix2D implements PMatrix {
   }
 
 
-  public void set(PMatrix3D src) {
+  public void set(PMatrix3DDouble src) {
   }
 
 
@@ -205,22 +205,22 @@ public class PMatrix2D implements PMatrix {
   }
 
 
-  public void apply(PMatrix source) {
-    if (source instanceof PMatrix2D) {
-      apply((PMatrix2D) source);
-    } else if (source instanceof PMatrix3D) {
-      apply((PMatrix3D) source);
+  public void apply(PMatrixDouble source) {
+    if (source instanceof PMatrix2DDouble) {
+      apply((PMatrix2DDouble) source);
+    } else if (source instanceof PMatrix3DDouble) {
+      apply((PMatrix3DDouble) source);
     }
   }
 
 
-  public void apply(PMatrix2D source) {
+  public void apply(PMatrix2DDouble source) {
     apply(source.m00, source.m01, source.m02,
           source.m10, source.m11, source.m12);
   }
 
 
-  public void apply(PMatrix3D source) {
+  public void apply(PMatrix3DDouble source) {
     throw new IllegalArgumentException("Cannot use apply(PMatrix3D) on a PMatrix2D.");
   }
 
@@ -252,13 +252,13 @@ public class PMatrix2D implements PMatrix {
   /**
    * Apply another matrix to the left of this one.
    */
-  public void preApply(PMatrix2D left) {
+  public void preApply(PMatrix2DDouble left) {
     preApply(left.m00, left.m01, left.m02,
              left.m10, left.m11, left.m12);
   }
 
 
-  public void preApply(PMatrix3D left) {
+  public void preApply(PMatrix3DDouble left) {
     throw new IllegalArgumentException("Cannot use preApply(PMatrix3D) on a PMatrix2D.");
   }
 

@@ -25,13 +25,14 @@ package de.fhpotsdam.unfolding.math;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
+import processing.core.PMatrix3D;
 import processing.core.PVector;
 
 
 /**
  * 4x4 matrix implementation.
  */
-public final class PMatrix3D implements PMatrix /*, PConstants*/ {
+public final class PMatrix3DDouble implements PMatrixDouble /*, PConstants*/ {
 
   public double m00, m01, m02, m03;
   public double m10, m11, m12, m13;
@@ -40,15 +41,15 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
 
 
   // locally allocated version to avoid creating new memory
-  protected PMatrix3D inverseCopy;
+  protected PMatrix3DDouble inverseCopy;
 
 
-  public PMatrix3D() {
+  public PMatrix3DDouble() {
     reset();
   }
 
 
-  public PMatrix3D(double m00, double m01, double m02,
+  public PMatrix3DDouble(double m00, double m01, double m02,
                    double m10, double m11, double m12) {
     set(m00, m01, m02, 0,
         m10, m11, m12, 0,
@@ -57,7 +58,7 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public PMatrix3D(double m00, double m01, double m02, double m03,
+  public PMatrix3DDouble(double m00, double m01, double m02, double m03,
                    double m10, double m11, double m12, double m13,
                    double m20, double m21, double m22, double m23,
                    double m30, double m31, double m32, double m33) {
@@ -68,8 +69,17 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public PMatrix3D(PMatrix matrix) {
+  public PMatrix3DDouble(PMatrixDouble matrix) {
     set(matrix);
+  }
+
+  
+  public PMatrix3D getAsPMatrix3D() {
+    return new PMatrix3D(
+        (float)m00, (float)m01, (float)m02, (float)m03,
+        (float)m10, (float)m11, (float)m12, (float)m13,
+        (float)m20, (float)m21, (float)m22, (float)m23,
+        (float)m30, (float)m31, (float)m32, (float)m33);
   }
 
 
@@ -84,8 +94,8 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   /**
    * Returns a copy of this PMatrix.
    */
-  public PMatrix3D get() {
-    PMatrix3D outgoing = new PMatrix3D();
+  public PMatrix3DDouble get() {
+    PMatrix3DDouble outgoing = new PMatrix3DDouble();
     outgoing.set(this);
     return outgoing;
   }
@@ -123,15 +133,15 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void set(PMatrix matrix) {
-    if (matrix instanceof PMatrix3D) {
-      PMatrix3D src = (PMatrix3D) matrix;
+  public void set(PMatrixDouble matrix) {
+    if (matrix instanceof PMatrix3DDouble) {
+      PMatrix3DDouble src = (PMatrix3DDouble) matrix;
       set(src.m00, src.m01, src.m02, src.m03,
           src.m10, src.m11, src.m12, src.m13,
           src.m20, src.m21, src.m22, src.m23,
           src.m30, src.m31, src.m32, src.m33);
     } else {
-      PMatrix2D src = (PMatrix2D) matrix;
+      PMatrix2DDouble src = (PMatrix2DDouble) matrix;
       set(src.m00, src.m01, 0, src.m02,
           src.m10, src.m11, 0, src.m12,
           0, 0, 1, 0,
@@ -297,16 +307,16 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void apply(PMatrix source) {
-    if (source instanceof PMatrix2D) {
-      apply((PMatrix2D) source);
-    } else if (source instanceof PMatrix3D) {
-      apply((PMatrix3D) source);
+  public void apply(PMatrixDouble source) {
+    if (source instanceof PMatrix2DDouble) {
+      apply((PMatrix2DDouble) source);
+    } else if (source instanceof PMatrix3DDouble) {
+      apply((PMatrix3DDouble) source);
     }
   }
 
 
-  public void apply(PMatrix2D source) {
+  public void apply(PMatrix2DDouble source) {
     apply(source.m00, source.m01, 0, source.m02,
           source.m10, source.m11, 0, source.m12,
           0, 0, 1, 0,
@@ -314,7 +324,7 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void apply(PMatrix3D source) {
+  public void apply(PMatrix3DDouble source) {
     apply(source.m00, source.m01, source.m02, source.m03,
           source.m10, source.m11, source.m12, source.m13,
           source.m20, source.m21, source.m22, source.m23,
@@ -363,7 +373,7 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   }
 
 
-  public void preApply(PMatrix2D left) {
+  public void preApply(PMatrix2DDouble left) {
     preApply(left.m00, left.m01, 0, left.m02,
              left.m10, left.m11, 0, left.m12,
              0, 0, 1, 0,
@@ -374,7 +384,7 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
   /**
    * Apply another matrix to the left of this one.
    */
-  public void preApply(PMatrix3D left) {
+  public void preApply(PMatrix3DDouble left) {
     preApply(left.m00, left.m01, left.m02, left.m03,
              left.m10, left.m11, left.m12, left.m13,
              left.m20, left.m21, left.m22, left.m23,
@@ -492,8 +502,18 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
     return m00*x + m01*y + m03;
   }
 
+  
+  public double multX(float x, float y) {
+    return m00*x + m01*y + m03;
+  }
+
 
   public double multY(double x, double y) {
+    return m10*x + m11*y + m13;
+  }
+
+
+  public double multY(float x, float y) {
     return m10*x + m11*y + m13;
   }
 
@@ -713,7 +733,7 @@ public final class PMatrix3D implements PMatrix /*, PConstants*/ {
                           double n20, double n21, double n22, double n23,
                           double n30, double n31, double n32, double n33) {
     if (inverseCopy == null) {
-      inverseCopy = new PMatrix3D();
+      inverseCopy = new PMatrix3DDouble();
     }
     inverseCopy.set(n00, n01, n02, n03,
                     n10, n11, n12, n13,

@@ -29,14 +29,14 @@ import processing.core.PVector;
 /**
  * Taken from processing.org and transformed into a double version.
  */
-public interface PMatrix {
+public interface PMatrixDouble {
   
   public void reset();
   
   /**
    * Returns a copy of this PMatrix.
    */
-  public PMatrix get();  
+  public PMatrixDouble get();  
 
   /**
    * Copies the matrix contents into a double array.
@@ -45,7 +45,7 @@ public interface PMatrix {
   public double[] get(double[] target);
   
   
-  public void set(PMatrix src);
+  public void set(PMatrixDouble src);
 
   public void set(double[] source);
 
@@ -85,11 +85,11 @@ public interface PMatrix {
   /** 
    * Multiply this matrix by another.
    */
-  public void apply(PMatrix source);
+  public void apply(PMatrixDouble source);
 
-  public void apply(PMatrix2D source);
+  public void apply(PMatrix2DDouble source);
 
-  public void apply(PMatrix3D source);
+  public void apply(PMatrix3DDouble source);
 
   public void apply(double n00, double n01, double n02, 
                     double n10, double n11, double n12);
@@ -102,9 +102,9 @@ public interface PMatrix {
   /**
    * Apply another matrix to the left of this one.
    */
-  public void preApply(PMatrix2D left);
+  public void preApply(PMatrix2DDouble left);
 
-  public void preApply(PMatrix3D left);
+  public void preApply(PMatrix3DDouble left);
 
   public void preApply(double n00, double n01, double n02, 
                        double n10, double n11, double n12);
