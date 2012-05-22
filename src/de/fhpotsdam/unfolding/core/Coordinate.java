@@ -2,6 +2,9 @@ package de.fhpotsdam.unfolding.core;
 
 import processing.core.*;
 
+/**
+ * Coordinates represent the coordinates of the tiles of the map.
+ */
 public class Coordinate {
 
 	public static int MAX_ZOOM = 20;
