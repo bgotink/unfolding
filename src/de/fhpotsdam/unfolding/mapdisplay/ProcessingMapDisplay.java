@@ -10,11 +10,11 @@ import processing.core.PConstants;
 import processing.core.PFont;
 import processing.core.PGraphics;
 import processing.core.PImage;
-import processing.core.PMatrix3D;
 import processing.core.PVector;
 import de.fhpotsdam.unfolding.Map;
 import de.fhpotsdam.unfolding.core.Coordinate;
 import de.fhpotsdam.unfolding.geo.Location;
+import de.fhpotsdam.unfolding.math.PMatrix3DDouble;
 import de.fhpotsdam.unfolding.providers.AbstractMapProvider;
 import de.fhpotsdam.unfolding.tiles.TileLoader;
 
@@ -27,9 +27,9 @@ public class ProcessingMapDisplay extends AbstractMapDisplay implements PConstan
 	public PApplet papplet;
 
 	/** The transformation matrix. */
-	protected PMatrix3D matrix = new PMatrix3D();
+	protected PMatrix3DDouble matrix = new PMatrix3DDouble();
 
-	protected PMatrix3D innerMatrix = new PMatrix3D();
+	protected PMatrix3DDouble innerMatrix = new PMatrix3DDouble();
 
 	// Background color
 	protected int bgColor = 0;
@@ -79,16 +79,16 @@ public class ProcessingMapDisplay extends AbstractMapDisplay implements PConstan
 	 */
 	public void calculateMatrix() {
 		synchronized (this) {
-			PMatrix3D invMatrix = new PMatrix3D();
+			PMatrix3DDouble invMatrix = new PMatrix3DDouble();
 			invMatrix.apply(matrix);
 			invMatrix.invert();
 			
 			
 			
-			float originalCenterX = invMatrix.multX(transformationCenter.x, transformationCenter.y);
-			float originalCenterY = invMatrix.multY(transformationCenter.x, transformationCenter.y);
+			double originalCenterX = invMatrix.multX(transformationCenter.x, transformationCenter.y);
+			double originalCenterY = invMatrix.multY(transformationCenter.x, transformationCenter.y);
 
-			matrix = new PMatrix3D();
+			matrix = new PMatrix3DDouble();
 			matrix.translate(transformationCenter.x, transformationCenter.y);
 			matrix.scale(scale);
 			matrix.rotateZ(angle);
@@ -99,14 +99,14 @@ public class ProcessingMapDisplay extends AbstractMapDisplay implements PConstan
 	public void calculateInnerMatrix() {
 		// Synchronize on this to not interfere with tile loading (see getVisibleKeys)
 		synchronized (this) {
-			PMatrix3D invMatrix = new PMatrix3D();
+			PMatrix3DDouble invMatrix = new PMatrix3DDouble();
 			invMatrix.apply(innerMatrix);
 			invMatrix.invert();
 
-			float originalCenterX = invMatrix.multX(innerTransformationCenter.x, innerTransformationCenter.y);
-			float originalCenterY = invMatrix.multY(innerTransformationCenter.x, innerTransformationCenter.y);
+			double originalCenterX = invMatrix.multX(innerTransformationCenter.x, innerTransformationCenter.y);
+			double originalCenterY = invMatrix.multY(innerTransformationCenter.x, innerTransformationCenter.y);
 
-			innerMatrix = new PMatrix3D();
+			innerMatrix = new PMatrix3DDouble();
 			innerMatrix.translate(innerTransformationCenter.x, innerTransformationCenter.y);
 			innerMatrix.scale(innerScale);
 			innerMatrix.rotateZ(innerAngle);
@@ -131,20 +131,20 @@ public class ProcessingMapDisplay extends AbstractMapDisplay implements PConstan
 			y -= offsetY;
 		}
 
-		float[] xyz = new float[3];
-		PMatrix3D m = new PMatrix3D();
+		double[] xyz = new double[3];
+		PMatrix3DDouble m = new PMatrix3DDouble();
 		m.apply(matrix);
 		if (inverse) {
 			m.invert();
 		}
-		m.mult(new float[] { x, y, 0 }, xyz);
+		m.mult(new double[] { x, y, 0 }, xyz);
 
 		if (!inverse) {
 			xyz[0] += offsetX;
 			xyz[1] += offsetY;
 		}
 
-		return xyz;
+		return new float[] {(float)xyz[0], (float)xyz[1], (float)xyz[2]};
 	}
 
 	public float[] getObjectFromInnerObjectPosition(float x, float y) {
@@ -180,20 +180,20 @@ public class ProcessingMapDisplay extends AbstractMapDisplay implements PConstan
 			y -= innerOffsetY;
 		}
 
-		float[] xyz = new float[3];
-		PMatrix3D m = new PMatrix3D();
+		double[] xyz = new double[3];
+		PMatrix3DDouble m = new PMatrix3DDouble();
 		m.apply(innerMatrix);
 		if (inverse) {
 			m.invert();
 		}
-		m.mult(new float[] { x, y, 0 }, xyz);
+		m.mult(new double[] { x, y, 0 }, xyz);
 
 		if (!inverse) {
 			xyz[0] += innerOffsetX;
 			xyz[1] += innerOffsetY;
 		}
 
-		return xyz;
+		return new float[] {(float)xyz[0], (float)xyz[1], (float)xyz[2]};
 	}
 
 	// Location (instead of innerObj) methods ---------------
@@ -203,15 +203,15 @@ public class ProcessingMapDisplay extends AbstractMapDisplay implements PConstan
 	}
 
 	private Coordinate getCoordinateFromInnerPosition(float x, float y) {
-		PMatrix3D m = new PMatrix3D();
-		float tl[] = new float[3];
-		m.mult(new float[] { 0, 0, 0 }, tl);
-		float br[] = new float[3];
-		m.mult(new float[] { TILE_WIDTH, TILE_HEIGHT, 0 }, br);
+		PMatrix3DDouble m = new PMatrix3DDouble();
+		double tl[] = new double[3];
+		m.mult(new double[] { 0, 0, 0 }, tl);
+		double br[] = new double[3];
+		m.mult(new double[] { TILE_WIDTH, TILE_HEIGHT, 0 }, br);
 
-		float col = (x - tl[0]) / (br[0] - tl[0]);
-		float row = (y - tl[1]) / (br[1] - tl[1]);
-		Coordinate coord = new Coordinate(row, col, 0);
+		double col = (x - tl[0]) / (br[0] - tl[0]);
+		double row = (y - tl[1]) / (br[1] - tl[1]);
+		Coordinate coord = new Coordinate((float)row, (float)col, 0);
 		return coord;
 	}
 
@@ -282,7 +282,7 @@ public class ProcessingMapDisplay extends AbstractMapDisplay implements PConstan
 		// translate and scale, from the middle
 		pg.pushMatrix();
 		pg.translate((float) innerOffsetX, (float) innerOffsetY);
-		pg.applyMatrix(innerMatrix);
+		pg.applyMatrix(innerMatrix.getAsPMatrix3D());
 
 		Vector visibleKeys = getVisibleKeys(pg);
 
