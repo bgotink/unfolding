@@ -36,6 +36,16 @@ public class GeoUtils {
 						* Math.cos(lon2Rad - lon1Rad));
 	}
 
+	public static float getDistance2(float lat1, float lon1, float lat2, float lon2) {
+		float lat1Rad = (float)getRadians(lat1);
+		float lon1Rad = (float)getRadians(lon1);
+		float lat2Rad = (float)getRadians(lat2);
+		float lon2Rad = (float)getRadians(lon2);
+
+		float r = (float)EARTH_RADIUS_KM;
+		return (float)(r * Math.acos(Math.sin(lat1Rad) * Math.sin(lat2Rad) +
+				              Math.cos(lat1Rad) * Math.cos(lat2Rad)	* Math.cos(lon2Rad - lon1Rad)));
+	}
 	/**
 	 * Get distance in kilometers between two points on the earth. Using the great-circle distance formula with the
 	 * approximated radius of a spherical earth.
