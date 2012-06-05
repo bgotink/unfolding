@@ -18,7 +18,7 @@ public class FlippedMapDisplay extends GLGraphicsMapDisplay {
 
 		outerPG.pushMatrix();
 		outerPG.translate(offsetX, offsetY);
-		outerPG.applyMatrix(matrix);
+		outerPG.applyMatrix(matrix.getAsPMatrix3D());
 		
 		// Flip test
 		GLTexture map = pg.getTexture();
