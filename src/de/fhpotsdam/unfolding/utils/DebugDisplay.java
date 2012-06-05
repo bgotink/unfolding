@@ -4,7 +4,7 @@ import processing.core.PApplet;
 import processing.core.PFont;
 import de.fhpotsdam.unfolding.Map;
 import de.fhpotsdam.unfolding.mapdisplay.AbstractMapDisplay;
-import de.fhpotsdam.unfolding.math.PMatrix3D;
+import de.fhpotsdam.unfolding.math.PMatrix3DDouble;
 
 public class DebugDisplay {
 
@@ -95,7 +95,7 @@ public class DebugDisplay {
 		p.text(infoText, x + padding, y + padding, width - padding, height - padding);
 	}
 
-	public static String getMatrix3DAsString(PMatrix3D m) {
+	public static String getMatrix3DAsString(PMatrix3DDouble m) {
 		return PApplet.nfs((float)m.m00, 2, 2) + "," + PApplet.nfs((float)m.m01, 2, 2) + "," + PApplet.nfs((float)m.m02, 2, 2) + ","
 				+ PApplet.nfs((float)m.m03, 2, 2) + "\n" + PApplet.nfs((float)m.m10, 2, 2) + "," + PApplet.nfs((float)m.m11, 2, 2) + ","
 				+ PApplet.nfs((float)m.m12, 2, 2) + "," + PApplet.nfs((float)m.m13, 2, 2) + "\n" + PApplet.nfs((float)m.m20, 2, 2) + ","
