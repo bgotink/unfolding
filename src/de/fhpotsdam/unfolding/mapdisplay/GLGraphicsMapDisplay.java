@@ -4,6 +4,7 @@ import processing.core.PApplet;
 import processing.core.PConstants;
 import processing.core.PGraphics;
 import codeanticode.glgraphics.GLGraphicsOffScreen;
+import codeanticode.glgraphics.GLTexture;
 import de.fhpotsdam.unfolding.marker.Marker;
 import de.fhpotsdam.unfolding.marker.MarkerManager;
 import de.fhpotsdam.unfolding.providers.AbstractMapProvider;
@@ -14,6 +15,8 @@ public class GLGraphicsMapDisplay extends ProcessingMapDisplay implements PConst
 	protected GLGraphicsOffScreen offscreenPG;
 	// Outer marker will be drawn on this
 	protected GLGraphicsOffScreen offscreenCutoffPG;
+	protected GLTexture offscreenTex;
+
 
 	protected float opacity = 255;
 
@@ -23,6 +26,8 @@ public class GLGraphicsMapDisplay extends ProcessingMapDisplay implements PConst
 
 		offscreenPG = new GLGraphicsOffScreen(papplet, (int) width, (int) height);
 		offscreenCutoffPG = new GLGraphicsOffScreen(papplet, (int) width, (int) height);
+		offscreenTex = new GLTexture(papplet, (int) width, (int) height);
+
 	}
 
 	@Override
@@ -44,6 +49,11 @@ public class GLGraphicsMapDisplay extends ProcessingMapDisplay implements PConst
 
 	@Override
 	protected void postDraw() {
+		drawMarker();
+		drawCanvas();
+	}
+	
+	protected void drawMarker(){
 		// Draws inner map (with inner marker) and outer marker
 		offscreenCutoffPG.beginDraw();
 		offscreenCutoffPG.image(offscreenPG.getTexture(), 0, 0);
@@ -51,14 +61,15 @@ public class GLGraphicsMapDisplay extends ProcessingMapDisplay implements PConst
 			mm.draw();
 		}
 		offscreenCutoffPG.endDraw();
-
-		// Transforms (outer) map pane, and draws inner map + outer marker onto canvas
-		// This cuts off marker at the border.
+		offscreenTex=offscreenCutoffPG.getTexture();
+	}
+	
+	protected void drawCanvas() {
 		PGraphics canvasPG = papplet.g;
 		canvasPG.pushMatrix();
 		canvasPG.translate(offsetX, offsetY);
 		canvasPG.applyMatrix(matrix);
-		canvasPG.image(offscreenCutoffPG.getTexture(), 0, 0);
+		canvasPG.image(offscreenTex, 0, 0);
 		canvasPG.popMatrix();
 	}
 

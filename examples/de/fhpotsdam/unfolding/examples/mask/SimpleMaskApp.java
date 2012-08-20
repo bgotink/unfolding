@@ -4,6 +4,7 @@ import processing.core.PApplet;
 import codeanticode.glgraphics.GLConstants;
 import codeanticode.glgraphics.GLGraphicsOffScreen;
 import de.fhpotsdam.unfolding.UnfoldingMap;
+import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
 import de.fhpotsdam.unfolding.utils.MapUtils;
 
 /**
@@ -14,17 +15,20 @@ public class SimpleMaskApp extends PApplet {
 	UnfoldingMap map;
 
 	GLGraphicsOffScreen mask;
+	public static final String JDBC_CONN_STRING_APPLICATION = "jdbc:sqlite:../data/unfolding3.mbtiles";
+
 
 	public void setup() {
 		size(830, 420, GLConstants.GLGRAPHICS);
-		map = new UnfoldingMap(this, "map1", 10, 10, 400, 400, true, false, null);
+		map = new UnfoldingMap(this, "maskMap", 10, 10, 400, 400, true, false, new MBTilesMapProvider(JDBC_CONN_STRING_APPLICATION));
+
 		MapUtils.createDefaultEventDispatcher(this, map);
 
 		mask = map.mapDisplay.getMask();
 	}
 
 	public void draw() {
-		background(0);
+		//background(0);
 
 		updateMask();
 		map.draw();

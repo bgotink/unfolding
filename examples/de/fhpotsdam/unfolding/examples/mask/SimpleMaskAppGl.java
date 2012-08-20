@@ -2,21 +2,28 @@ package de.fhpotsdam.unfolding.examples.mask;
 
 import processing.core.PApplet;
 import codeanticode.glgraphics.GLConstants;
+import codeanticode.glgraphics.GLGraphicsOffScreen;
 import de.fhpotsdam.unfolding.UnfoldingMap;
 import de.fhpotsdam.unfolding.geo.Location;
+import de.fhpotsdam.unfolding.providers.MBTilesMapProvider;
 import de.fhpotsdam.unfolding.ui.MaskUI;
 import de.fhpotsdam.unfolding.utils.MapUtils;
 
 public class SimpleMaskAppGl extends PApplet {
+	
+	public static final String JDBC_CONN_STRING_APPLICATION = "jdbc:sqlite:../data/unfolding3.mbtiles";
 
 	UnfoldingMap map;
-	MaskUI mask;
+	MaskUI maskUI;
+	GLGraphicsOffScreen mask;
+
+	
 
 	public void setup() {
 		size(800, 600, GLConstants.GLGRAPHICS);
-		map = new UnfoldingMap(this);
-		map.zoomAndPanTo(new Location(52.5f, 13.4f), 10);
-		mask = new MaskUI(this);
+		map = new UnfoldingMap(this,  new MBTilesMapProvider(JDBC_CONN_STRING_APPLICATION));
+		//map.zoomAndPanTo(new Location(52.5f, 13.4f), 10);
+		maskUI = new MaskUI(this,map);
 
 		MapUtils.createDefaultEventDispatcher(this, map);
 	}
@@ -27,17 +34,17 @@ public class SimpleMaskAppGl extends PApplet {
 		//background(0, 255, 0);
 		map.draw();
 
-		mask.draw();
+		maskUI.draw();
 
 	}
 
 	public void updateMask() {
-		mask.c.beginDraw();
+		maskUI.c.beginDraw();
 		//mask.c.background(0);
-		mask.c.noStroke();
-		mask.c.fill(255);
-		mask.c.ellipse(mouseX, mouseY, 100, 100);
-		mask.c.endDraw();
+		maskUI.c.noStroke();
+		maskUI.c.fill(255);
+		maskUI.c.ellipse(mouseX, mouseY, 100, 100);
+		maskUI.c.endDraw();
 
 		// put the canvas into the texture
 		// mask.setTexture(canvas.getTexture());

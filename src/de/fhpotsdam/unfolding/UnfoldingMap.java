@@ -86,6 +86,7 @@ public class UnfoldingMap implements MapEventListener {
 
 	/**
 	 * Creates a new full-canvas Map with a generated ID.
+	 * todo: why is use mask always true ?
 	 */
 	public UnfoldingMap(PApplet p) {
 		this(p, generateId(), 0, 0, p.width, p.height, true, false, null);
